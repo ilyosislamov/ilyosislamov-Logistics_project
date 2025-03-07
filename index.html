@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ilyos' Project Hub</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        header {
+            width: 100%;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+        input[type="file"], input[type="text"] {
+            margin-top: 10px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            background: #3498db;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        .uploaded-files {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .uploaded-files div {
+            background: #ecf0f1;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .uploaded-files h4 {
+            margin: 0;
+            padding-bottom: 5px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>Ilyos' Project Hub</header>
+    <div class="container">
+        <h2>Upload Your Project</h2>
+        <input type="text" id="projectTitle" placeholder="Enter project title">
+        <input type="text" id="fileName" placeholder="Enter file description (optional)">
+        <input type="file" id="fileUpload">
+        <button onclick="uploadFile()">Upload</button>
+        <div class="uploaded-files" id="uploadedFiles">
+            <h3>Uploaded Files</h3>
+        </div>
+    </div>
+    <script>
+        function uploadFile() {
+            const projectTitleInput = document.getElementById('projectTitle');
+            const fileNameInput = document.getElementById('fileName');
+            const fileInput = document.getElementById('fileUpload');
+            const uploadedFilesDiv = document.getElementById('uploadedFiles');
+            
+            if (fileInput.files.length > 0 && projectTitleInput.value.trim() !== "") {
+                const projectTitle = projectTitleInput.value.trim();
+                const fileRealName = fileInput.files[0].name;
+                const fileName = fileNameInput.value.trim();
+                
+                const fileContainer = document.createElement("div");
+                const titleElement = document.createElement("h4");
+                titleElement.textContent = projectTitle;
+                
+                fileContainer.appendChild(titleElement);
+                
+                if (fileName !== "") {
+                    const fileDescription = document.createElement("p");
+                    fileDescription.textContent = `${fileName} (${fileRealName})`;
+                    fileContainer.appendChild(fileDescription);
+                } else {
+                    const fileDescription = document.createElement("p");
+                    fileDescription.textContent = `(${fileRealName})`;
+                    fileContainer.appendChild(fileDescription);
+                }
+                
+                uploadedFilesDiv.appendChild(fileContainer);
+                
+                alert("File " + fileRealName + " uploaded successfully under project " + projectTitle + "!");
+                projectTitleInput.value = "";
+                fileNameInput.value = "";
+                fileInput.value = "";
+            } else {
+                alert("Please enter a project title and select a file to upload.");
+            }
+        }
+    </script>
+</body>
+</html>

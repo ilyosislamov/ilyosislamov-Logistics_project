@@ -3,109 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cool File Uploader</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <title>Assignment Hub</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #74ebd5, #acb6e5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
+            padding: 0;
+            background: url('https://source.unsplash.com/1600x900/?study,desk') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        header {
+            width: 100%;
+            background-color: rgba(44, 62, 80, 0.9);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .pre-title {
+            font-size: 18px;
+            font-weight: 300;
+            color: white;
+            margin-bottom: 5px;
         }
         .container {
-            background: white;
+            margin-top: 20px;
             padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
-        .drop-area {
-            border: 2px dashed #007bff;
-            padding: 30px;
-            cursor: pointer;
+        .upload-box {
+            border: 2px dashed #3498db;
+            padding: 20px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            background: #ecf0f1;
+            cursor: pointer;
             transition: background 0.3s;
         }
-        .drop-area:hover {
-            background: rgba(0, 123, 255, 0.1);
+        .upload-box:hover {
+            background: #d5e1ea;
         }
-        .file-list {
-            list-style: none;
-            padding: 0;
+        input[type="file"] {
+            display: none;
         }
-        .file-list li {
-            background: #f8f9fa;
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            background: #3498db;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        .uploaded-files {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .file-item {
+            background: white;
+            margin: 5px 0;
             padding: 10px;
-            margin-top: 10px;
             border-radius: 5px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
         }
-        .progress-bar {
-            width: 100%;
-            height: 5px;
-            background: #e0e0e0;
-            border-radius: 5px;
-            margin-top: 10px;
-            overflow: hidden;
-        }
-        .progress {
-            height: 100%;
-            width: 0;
-            background: #007bff;
-            transition: width 0.4s;
+        .delete-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
         }
     </style>
 </head>
 <body>
+    <header>
+        <div class="pre-title">Islamov Ilyos</div>
+        Assignment Hub
+    </header>
     <div class="container">
-        <h2><i class="fa-solid fa-cloud-upload-alt"></i> Upload Your Files</h2>
-        <div class="drop-area" id="drop-area">Drag & Drop Files Here</div>
-        <input type="file" id="file-input" multiple hidden>
-        <ul class="file-list" id="file-list"></ul>
-        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <h2>Upload Your Assignment</h2>
+        <label class="upload-box" for="fileUpload">Drag & Drop or Click to Upload</label>
+        <input type="file" id="fileUpload">
+        <button onclick="uploadFile()">Upload</button>
+        <div class="uploaded-files" id="uploadedFiles">
+            <h3>Uploaded Files</h3>
+        </div>
     </div>
-    
     <script>
-        const dropArea = document.getElementById('drop-area');
-        const fileInput = document.getElementById('file-input');
-        const fileList = document.getElementById('file-list');
-        const progressBar = document.getElementById('progress');
-        
-        dropArea.addEventListener('click', () => fileInput.click());
-        dropArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropArea.style.background = 'rgba(0, 123, 255, 0.2)';
-        });
-        dropArea.addEventListener('dragleave', () => {
-            dropArea.style.background = 'white';
-        });
-        dropArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropArea.style.background = 'white';
-            handleFiles(e.dataTransfer.files);
-        });
-        fileInput.addEventListener('change', () => handleFiles(fileInput.files));
-        
-        function handleFiles(files) {
-            progressBar.style.width = '0%';
-            let progress = 0;
-            let interval = setInterval(() => {
-                progress += 10;
-                progressBar.style.width = `${progress}%`;
-                if (progress >= 100) clearInterval(interval);
-            }, 100);
+        function uploadFile() {
+            const fileInput = document.getElementById('fileUpload');
+            const uploadedFilesDiv = document.getElementById('uploadedFiles');
             
-            Array.from(files).forEach(file => {
-                const li = document.createElement('li');
-                li.innerHTML = `${file.name} <button onclick="this.parentElement.remove()">❌</button>`;
-                fileList.appendChild(li);
-            });
+            if (fileInput.files.length > 0) {
+                const fileRealName = fileInput.files[0].name;
+                
+                const fileContainer = document.createElement("div");
+                fileContainer.classList.add("file-item");
+                
+                const fileText = document.createElement("span");
+                fileText.textContent = fileRealName;
+                
+                const deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "Delete";
+                deleteBtn.classList.add("delete-btn");
+                deleteBtn.onclick = function() {
+                    fileContainer.remove();
+                };
+                
+                fileContainer.appendChild(fileText);
+                fileContainer.appendChild(deleteBtn);
+                uploadedFilesDiv.appendChild(fileContainer);
+                
+                alert("File " + fileRealName + " uploaded successfully!");
+                fileInput.value = "";
+            } else {
+                alert("Please select a file to upload.");
+            }
         }
     </script>
 </body>

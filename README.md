@@ -1,1 +1,1 @@
-# ilyosislamov-Logistics_proeject
+# ilyosislamov-Logistics_project

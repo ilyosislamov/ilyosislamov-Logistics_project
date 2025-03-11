@@ -3,127 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ilyos' Project Hub</title>
+    <title>Cool File Uploader</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f5;
+            background: linear-gradient(135deg, #74ebd5, #acb6e5);
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
-        }
-        header {
-            width: 100%;
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 28px;
-            font-weight: bold;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 0;
         }
         .container {
-            margin-top: 20px;
-            padding: 20px;
             background: white;
-            width: 80%;
-            max-width: 600px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
             border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
-        input[type="file"], input[type="text"] {
-            margin-top: 10px;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            width: 100%;
-        }
-        button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            border: none;
-            background: #3498db;
-            color: white;
+        .drop-area {
+            border: 2px dashed #007bff;
+            padding: 30px;
             cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
             transition: background 0.3s;
         }
-        button:hover {
-            background: #2980b9;
+        .drop-area:hover {
+            background: rgba(0, 123, 255, 0.1);
         }
-        .uploaded-files {
-            margin-top: 20px;
-            text-align: left;
+        .file-list {
+            list-style: none;
+            padding: 0;
         }
-        .uploaded-files div {
-            background: #ecf0f1;
-            margin: 5px 0;
+        .file-list li {
+            background: #f8f9fa;
             padding: 10px;
+            margin-top: 10px;
             border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .uploaded-files h4 {
-            margin: 0;
-            padding-bottom: 5px;
-            font-size: 18px;
-            font-weight: bold;
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            width: 0;
+            background: #007bff;
+            transition: width 0.4s;
         }
     </style>
 </head>
 <body>
-    <header>Islamov Ilyos' Project Hub</header>
     <div class="container">
-        <h2>Upload Your Project</h2>
-        <input type="text" id="projectTitle" placeholder="Enter project title">
-        <input type="text" id="fileName" placeholder="Enter file description (optional)">
-        <input type="file" id="fileUpload">
-        <button onclick="uploadFile()">Upload</button>
-        <div class="uploaded-files" id="uploadedFiles">
-            <h3>Uploaded Files</h3>
-        </div>
+        <h2><i class="fa-solid fa-cloud-upload-alt"></i> Upload Your Files</h2>
+        <div class="drop-area" id="drop-area">Drag & Drop Files Here</div>
+        <input type="file" id="file-input" multiple hidden>
+        <ul class="file-list" id="file-list"></ul>
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
     </div>
+    
     <script>
-        function uploadFile() {
-            const projectTitleInput = document.getElementById('projectTitle');
-            const fileNameInput = document.getElementById('fileName');
-            const fileInput = document.getElementById('fileUpload');
-            const uploadedFilesDiv = document.getElementById('uploadedFiles');
+        const dropArea = document.getElementById('drop-area');
+        const fileInput = document.getElementById('file-input');
+        const fileList = document.getElementById('file-list');
+        const progressBar = document.getElementById('progress');
+        
+        dropArea.addEventListener('click', () => fileInput.click());
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.style.background = 'rgba(0, 123, 255, 0.2)';
+        });
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.style.background = 'white';
+        });
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.style.background = 'white';
+            handleFiles(e.dataTransfer.files);
+        });
+        fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+        
+        function handleFiles(files) {
+            progressBar.style.width = '0%';
+            let progress = 0;
+            let interval = setInterval(() => {
+                progress += 10;
+                progressBar.style.width = `${progress}%`;
+                if (progress >= 100) clearInterval(interval);
+            }, 100);
             
-            if (fileInput.files.length > 0 && projectTitleInput.value.trim() !== "") {
-                const projectTitle = projectTitleInput.value.trim();
-                const fileRealName = fileInput.files[0].name;
-                const fileName = fileNameInput.value.trim();
-                
-                const fileContainer = document.createElement("div");
-                const titleElement = document.createElement("h4");
-                titleElement.textContent = projectTitle;
-                
-                fileContainer.appendChild(titleElement);
-                
-                if (fileName !== "") {
-                    const fileDescription = document.createElement("p");
-                    fileDescription.textContent = `${fileName} (${fileRealName})`;
-                    fileContainer.appendChild(fileDescription);
-                } else {
-                    const fileDescription = document.createElement("p");
-                    fileDescription.textContent = `(${fileRealName})`;
-                    fileContainer.appendChild(fileDescription);
-                }
-                
-                uploadedFilesDiv.appendChild(fileContainer);
-                
-                alert("File " + fileRealName + " uploaded successfully under project " + projectTitle + "!");
-                projectTitleInput.value = "";
-                fileNameInput.value = "";
-                fileInput.value = "";
-            } else {
-                alert("Please enter a project title and select a file to upload.");
-            }
+            Array.from(files).forEach(file => {
+                const li = document.createElement('li');
+                li.innerHTML = `${file.name} <button onclick="this.parentElement.remove()">❌</button>`;
+                fileList.appendChild(li);
+            });
         }
     </script>
 </body>

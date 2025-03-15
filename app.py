@@ -4,7 +4,7 @@ Created on Sat Mar 15 12:14:08 2025
 
 @author: win
 """
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template  # Add render_template
 import os
 
 app = Flask(__name__)
@@ -18,6 +18,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 @app.route('/')
 def home():
     return render_template('index.html')  # Render the index.html file from the templates folder
+
 # Route for file uploads
 @app.route('/upload', methods=['POST'])
 def upload_file():

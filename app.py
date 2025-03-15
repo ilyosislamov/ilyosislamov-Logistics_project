@@ -17,8 +17,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 # Route for the root URL
 @app.route('/')
 def home():
-    return "Welcome to the Logistics Project Site! Use the /upload endpoint to upload files."
-
+    return render_template('index.html')  # Render the index.html file from the templates folder
 # Route for file uploads
 @app.route('/upload', methods=['POST'])
 def upload_file():

@@ -6,12 +6,12 @@
     <title>Assignment Hub</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap');
-        
+
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background: url('https://source.unsplash.com/1600x900/?education,workspace') no-repeat center center/cover;
+            background: url('https://source.unsplash.com/1600x900/?education,library') no-repeat center center/cover;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -21,7 +21,7 @@
         }
         header {
             width: 100%;
-            background: rgba(44, 62, 80, 0.85);
+            background: rgba(44, 62, 80, 0.9);
             color: white;
             padding: 20px;
             text-align: center;
@@ -37,10 +37,10 @@
         .container {
             margin-top: 20px;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.2);
             width: 80%;
-            max-width: 600px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
             border-radius: 10px;
             text-align: center;
             backdrop-filter: blur(10px);
@@ -53,9 +53,10 @@
             cursor: pointer;
             transition: background 0.3s, transform 0.2s;
             color: white;
+            text-align: center;
         }
-        .upload-box:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .upload-box:hover, .upload-box.dragover {
+            background: rgba(255, 255, 255, 0.3);
             transform: scale(1.05);
         }
         input[type="file"] {
@@ -79,6 +80,7 @@
         .uploaded-files {
             margin-top: 20px;
             text-align: left;
+            display: none;
         }
         .file-item {
             background: rgba(255, 255, 255, 0.2);
@@ -112,7 +114,7 @@
     </header>
     <div class="container">
         <h2>Upload Your Assignment</h2>
-        <label class="upload-box" for="fileUpload">Drag & Drop or Click to Upload</label>
+        <label class="upload-box" for="fileUpload" id="dropArea">Drag & Drop or Click to Upload</label>
         <input type="file" id="fileUpload">
         <button onclick="uploadFile()">Upload</button>
         <div class="uploaded-files" id="uploadedFiles">
@@ -138,18 +140,46 @@
                 deleteBtn.classList.add("delete-btn");
                 deleteBtn.onclick = function() {
                     fileContainer.remove();
+                    if (uploadedFilesDiv.children.length <= 1) {
+                        uploadedFilesDiv.style.display = "none";
+                    }
                 };
                 
                 fileContainer.appendChild(fileText);
                 fileContainer.appendChild(deleteBtn);
                 uploadedFilesDiv.appendChild(fileContainer);
                 
-                alert("File " + fileRealName + " uploaded successfully!");
+                uploadedFilesDiv.style.display = "block";
+                
                 fileInput.value = "";
             } else {
                 alert("Please select a file to upload.");
             }
         }
+
+        // Drag & Drop Feature
+        const dropArea = document.getElementById("dropArea");
+        const fileInput = document.getElementById("fileUpload");
+
+        dropArea.addEventListener("dragover", (event) => {
+            event.preventDefault();
+            dropArea.classList.add("dragover");
+        });
+
+        dropArea.addEventListener("dragleave", () => {
+            dropArea.classList.remove("dragover");
+        });
+
+        dropArea.addEventListener("drop", (event) => {
+            event.preventDefault();
+            dropArea.classList.remove("dragover");
+            if (event.dataTransfer.files.length > 0) {
+                fileInput.files = event.dataTransfer.files;
+                uploadFile();
+            }
+        });
+
+        dropArea.addEventListener("click", () => fileInput.click());
     </script>
 </body>
 </html>

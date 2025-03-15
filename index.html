@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logistics Project Site</title>
+    <style>
+        /* Your existing CSS styles */
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Islamov Ilyosbek</h1>
+        <h2>Logistics Project Site</h2>
+    </div>
+    <div class="upload-box">
+        <label for="file-upload">Drag & Drop or Click to Upload</label>
+        <input type="file" id="file-upload" multiple>
+        <p>Supported formats: PDF, DOC, XLS, JPG, PNG</p>
+    </div>
+    <div class="uploaded-files">
+        <h3>Uploaded Files:</h3>
+        <ul id="file-list"></ul>
+    </div>
+
+    <script>
+        const uploadBox = document.querySelector('.upload-box');
+        const fileInput = document.getElementById('file-upload');
+        const fileList = document.getElementById('file-list');
+
+        // Function to upload files to the Flask backend
+        const uploadFiles = async (files) => {
+            const formData = new FormData();
+            for (const file of files) {
+                formData.append('file', file);
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    alert(data.message);
+                    updateFileList(files); // Update the file list
+                } else {
+                    const error = await response.json();
+                    alert(error.error);
+                }
+            } catch (error) {
+                alert('Failed to upload files');
+                console.error(error);
+            }
+        };
+
+        // Function to update the file list
+        const updateFileList = (files) => {
+            fileList.innerHTML = ''; // Clear the list
+            files.forEach((file, index) => {
+                const listItem = document.createElement('li');
+                listItem.textContent = file.name;
+                fileList.appendChild(listItem);
+            });
+        };
+
+        // Handle drag and drop
+        uploadBox.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadBox.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+        });
+
+        uploadBox.addEventListener('dragleave', () => {
+            uploadBox.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+        });
+
+        uploadBox.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadBox.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+            const files = e.dataTransfer.files;
+            uploadFiles(files); // Upload files to the backend
+        });
+
+        // Handle file input change
+        fileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files.length > 0) {
+                uploadFiles(files); // Upload files to the backend
+            }
+        });
+    </script>
+</body>
+</html>

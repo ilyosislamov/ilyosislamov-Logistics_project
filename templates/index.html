@@ -5,7 +5,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logistics Project Site</title>
     <style>
-        /* Your existing CSS styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'); /* Background image */
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        .header h2 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .upload-box {
+            background: rgba(255, 255, 255, 0.3); /* Semi-transparent background */
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: #000;
+            border: 2px dashed #007BFF;
+            width: 300px;
+        }
+
+        .upload-box label {
+            display: block;
+            padding: 10px 20px;
+            background: #007BFF;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .upload-box label:hover {
+            background: #0056b3;
+        }
+
+        .upload-box p {
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .uploaded-files {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: left;
+            color: #000;
+        }
+
+        .uploaded-files h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.2rem;
+        }
+
+        .uploaded-files ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .uploaded-files li {
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .uploaded-files a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .uploaded-files a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -60,7 +154,11 @@
             fileList.innerHTML = ''; // Clear the list
             files.forEach((file, index) => {
                 const listItem = document.createElement('li');
-                listItem.textContent = file.name;
+                const fileLink = document.createElement('a');
+                fileLink.href = `https://ilyosislamov-logistics-project.onrender.com/uploads/${file.name}`; // Link to the uploaded file
+                fileLink.textContent = file.name;
+                fileLink.target = '_blank'; // Open in a new tab
+                listItem.appendChild(fileLink);
                 fileList.appendChild(listItem);
             });
         };

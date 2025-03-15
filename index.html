@@ -3,183 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assignment Hub</title>
+    <title>Logistics Project Site</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap');
-
         body {
-            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background: url('https://source.unsplash.com/1600x900/?education,library') no-repeat center center/cover;
+            font-family: Arial, sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            height: 100vh;
-            color: white;
-        }
-        header {
-            width: 100%;
-            background: rgba(44, 62, 80, 0.9);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 32px;
-            font-weight: bold;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        .pre-title {
-            font-size: 18px;
-            font-weight: 300;
-            opacity: 0.8;
-        }
-        .container {
-            margin-top: 20px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            width: 80%;
-            max-width: 500px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-        .upload-box {
-            border: 2px dashed rgba(255, 255, 255, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
-            color: white;
-            text-align: center;
-        }
-        .upload-box:hover, .upload-box.dragover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
-        }
-        input[type="file"] {
-            display: none;
-        }
-        button {
-            margin-top: 15px;
-            padding: 12px 25px;
-            border: none;
-            background: #3498db;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: background 0.3s, transform 0.2s;
-        }
-        button:hover {
-            background: #2980b9;
-            transform: scale(1.1);
-        }
-        .uploaded-files {
-            margin-top: 20px;
-            text-align: left;
-            display: none;
-        }
-        .file-item {
-            background: rgba(255, 255, 255, 0.2);
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-            color: white;
+            height: 100vh;
+            flex-direction: column;
         }
-        .delete-btn {
-            background: red;
-            color: white;
-            border: none;
-            padding: 5px 10px;
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        .header h2 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .upload-box {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: #333;
+        }
+
+        .upload-box input[type="file"] {
+            display: none;
+        }
+
+        .upload-box label {
+            display: block;
+            padding: 10px 20px;
+            background: #007BFF;
+            color: #fff;
+            border-radius: 5px;
             cursor: pointer;
-            border-radius: 3px;
-            transition: background 0.3s;
         }
-        .delete-btn:hover {
-            background: darkred;
+
+        .upload-box label:hover {
+            background: #0056b3;
+        }
+
+        .upload-box p {
+            margin-top: 10px;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="pre-title">Islamov Ilyos</div>
-        Assignment Hub
-    </header>
-    <div class="container">
-        <h2>Upload Your Assignment</h2>
-        <label class="upload-box" for="fileUpload" id="dropArea">Drag & Drop or Click to Upload</label>
-        <input type="file" id="fileUpload">
-        <button onclick="uploadFile()">Upload</button>
-        <div class="uploaded-files" id="uploadedFiles">
-            <h3>Uploaded Files</h3>
-        </div>
+    <div class="header">
+        <h1>Islamov Ilyosbek</h1>
+        <h2>Logistics Project Site</h2>
     </div>
+    <div class="upload-box">
+        <label for="file-upload">Drag & Drop or Click to Upload</label>
+        <input type="file" id="file-upload">
+        <p>Supported formats: PDF, DOC, XLS, JPG, PNG</p>
+    </div>
+
     <script>
-        function uploadFile() {
-            const fileInput = document.getElementById('fileUpload');
-            const uploadedFilesDiv = document.getElementById('uploadedFiles');
-            
+        const uploadBox = document.querySelector('.upload-box');
+        const fileInput = document.getElementById('file-upload');
+
+        uploadBox.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadBox.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+        });
+
+        uploadBox.addEventListener('dragleave', () => {
+            uploadBox.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+        });
+
+        uploadBox.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadBox.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+            fileInput.files = e.dataTransfer.files;
+            alert(`File "${e.dataTransfer.files[0].name}" uploaded successfully!`);
+        });
+
+        fileInput.addEventListener('change', (e) => {
             if (fileInput.files.length > 0) {
-                const fileRealName = fileInput.files[0].name;
-                
-                const fileContainer = document.createElement("div");
-                fileContainer.classList.add("file-item");
-                
-                const fileText = document.createElement("span");
-                fileText.textContent = fileRealName;
-                
-                const deleteBtn = document.createElement("button");
-                deleteBtn.textContent = "Delete";
-                deleteBtn.classList.add("delete-btn");
-                deleteBtn.onclick = function() {
-                    fileContainer.remove();
-                    if (uploadedFilesDiv.children.length <= 1) {
-                        uploadedFilesDiv.style.display = "none";
-                    }
-                };
-                
-                fileContainer.appendChild(fileText);
-                fileContainer.appendChild(deleteBtn);
-                uploadedFilesDiv.appendChild(fileContainer);
-                
-                uploadedFilesDiv.style.display = "block";
-                
-                fileInput.value = "";
-            } else {
-                alert("Please select a file to upload.");
-            }
-        }
-
-        // Drag & Drop Feature
-        const dropArea = document.getElementById("dropArea");
-        const fileInput = document.getElementById("fileUpload");
-
-        dropArea.addEventListener("dragover", (event) => {
-            event.preventDefault();
-            dropArea.classList.add("dragover");
-        });
-
-        dropArea.addEventListener("dragleave", () => {
-            dropArea.classList.remove("dragover");
-        });
-
-        dropArea.addEventListener("drop", (event) => {
-            event.preventDefault();
-            dropArea.classList.remove("dragover");
-            if (event.dataTransfer.files.length > 0) {
-                fileInput.files = event.dataTransfer.files;
-                uploadFile();
+                alert(`File "${fileInput.files[0].name}" uploaded successfully!`);
             }
         });
-
-        dropArea.addEventListener("click", () => fileInput.click());
     </script>
 </body>
 </html>

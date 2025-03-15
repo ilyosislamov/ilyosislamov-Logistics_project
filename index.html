@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logistics Project Website</title>
+    <title>Logistics Project Site</title>
     <style>
         body {
             margin: 0;
@@ -70,23 +70,66 @@
             margin-top: 10px;
             font-size: 0.9rem;
         }
+
+        .uploaded-files {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.7); /* Semi-transparent white background for file list */
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: left;
+        }
+
+        .uploaded-files h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.2rem;
+            color: #000;
+        }
+
+        .uploaded-files ul {
+            list-style-type: decimal; /* Ordered list with numbers */
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .uploaded-files li {
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #000;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>Islamov Ilyosbek</h1>
-        <h2>Logistics Project</h2>
+        <h2>Logistics Project Site</h2>
     </div>
     <div class="upload-box">
         <label for="file-upload">Drag & Drop or Click to Upload</label>
-        <input type="file" id="file-upload">
+        <input type="file" id="file-upload" multiple> <!-- Allow multiple files -->
         <p>Supported formats: PDF, DOC, XLS, JPG, PNG</p>
+    </div>
+    <div class="uploaded-files">
+        <h3>Uploaded Files:</h3>
+        <ul id="file-list"></ul> <!-- List to display uploaded files -->
     </div>
 
     <script>
         const uploadBox = document.querySelector('.upload-box');
         const fileInput = document.getElementById('file-upload');
+        const fileList = document.getElementById('file-list');
 
+        // Function to update the file list
+        const updateFileList = (files) => {
+            fileList.innerHTML = ''; // Clear the list
+            files.forEach((file, index) => {
+                const listItem = document.createElement('li');
+                listItem.textContent = file.name;
+                fileList.appendChild(listItem);
+            });
+        };
+
+        // Handle drag and drop
         uploadBox.addEventListener('dragover', (e) => {
             e.preventDefault();
             uploadBox.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'; /* Slightly lighter on drag-over */
@@ -100,12 +143,13 @@
             e.preventDefault();
             uploadBox.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
             fileInput.files = e.dataTransfer.files;
-            alert(`File "${e.dataTransfer.files[0].name}" uploaded successfully!`);
+            updateFileList(Array.from(fileInput.files)); // Update the file list
         });
 
+        // Handle file input change
         fileInput.addEventListener('change', (e) => {
             if (fileInput.files.length > 0) {
-                alert(`File "${fileInput.files[0].name}" uploaded successfully!`);
+                updateFileList(Array.from(fileInput.files)); // Update the file list
             }
         });
     </script>
